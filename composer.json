@@ -1,0 +1,39 @@
+{
+  "name": "tourze/bacon-qr-code-bundle",
+  "description": "Symfony Bundle for bacon/bacon-qr-code",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "require": {
+    "php": "^8.1",
+    "bacon/bacon-qr-code": "^3.0",
+    "symfony/config": "^6.4",
+    "symfony/console": "^6.4",
+    "symfony/dependency-injection": "^6.4",
+    "symfony/http-kernel": "^6.4",
+    "symfony/framework-bundle": "^6.4",
+    "symfony/yaml": "^6.4 || ^7.1",
+    "symfony/service-contracts": "^3.5",
+    "tourze/easy-admin-attribute": "0.0.*",
+    "tourze/doctrine-indexed-bundle": "0.0.*",
+    "tourze/doctrine-timestamp-bundle": "0.0.*",
+    "tourze/symfony-lock-command-bundle": "0.0.*",
+    "tourze/symfony-cron-job-bundle": "0.0.*",
+    "nesbot/carbon": "^2.72 || ^3",
+    "psr/log": "^3|^2|^1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0",
+    "phpstan/phpstan": "^2.1",
+    "shipmonk/composer-dependency-analyser": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "BaconQrCodeBundle\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BaconQrCodeBundle\\Tests\\": "src"
+    }
+  }
+}
