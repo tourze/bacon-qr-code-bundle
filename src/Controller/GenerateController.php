@@ -20,10 +20,16 @@ class GenerateController extends AbstractController
     #[Route('/qr-code/{data}', name: 'qr_code_generate', requirements: ['data' => '[\\w\\W]+'])]
     public function renderCode(string $data, Request $request): Response
     {
-        // 从请求参数获取配置选项
+        // 从请求参数获取配置选项，使用 filter() 代替 getInt() 以解决废弃警告
         $options = [
-            'size' => $request->query->getInt('size', 300),
-            'margin' => $request->query->getInt('margin', 1),
+            'size' => $request->query->filter('size', 300, FILTER_VALIDATE_INT, [
+                'options' => ['default' => 300],
+                'flags' => FILTER_NULL_ON_FAILURE,
+            ]),
+            'margin' => $request->query->filter('margin', 1, FILTER_VALIDATE_INT, [
+                'options' => ['default' => 1],
+                'flags' => FILTER_NULL_ON_FAILURE,
+            ]),
             'format' => $request->query->get('format'),
         ];
 
