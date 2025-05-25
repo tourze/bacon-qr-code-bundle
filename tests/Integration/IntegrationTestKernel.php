@@ -42,9 +42,9 @@ class IntegrationTestKernel extends Kernel
             'php_errors' => [
                 'log' => true,
             ],
-            'validation' => [
-                'email_validation_mode' => 'html5',
-            ],
+//            'validation' => [
+//                'email_validation_mode' => 'html5',
+//            ],
 //            'uid' => [
 //                'default_uuid_version' => 7,
 //                'time_based_uuid_version' => 7,
