@@ -14,6 +14,7 @@
     "symfony/http-kernel": "^6.4",
     "symfony/routing": "^6.4",
     "symfony/yaml": "^6.4 || ^7.1",
+    "tourze/bundle-dependency": "0.0.*",
     "tourze/symfony-routing-auto-loader-bundle": "0.0.*"
   },
   "require-dev": {

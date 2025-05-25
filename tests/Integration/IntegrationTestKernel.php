@@ -9,6 +9,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Tourze\RoutingAutoLoaderBundle\RoutingAutoLoaderBundle;
 
 class IntegrationTestKernel extends Kernel
 {
@@ -23,6 +24,7 @@ class IntegrationTestKernel extends Kernel
     {
         return [
             new FrameworkBundle(),
+            new RoutingAutoLoaderBundle(),
             new BaconQrCodeBundle(),
         ];
     }
@@ -40,16 +42,19 @@ class IntegrationTestKernel extends Kernel
             'php_errors' => [
                 'log' => true,
             ],
+            'validation' => [
+                'email_validation_mode' => 'html5',
+            ],
+            'uid' => [
+                'default_uuid_version' => 7,
+                'time_based_uuid_version' => 7,
+            ],
         ]);
     }
 
-    protected function configureRoutes($routes): void
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        if ($routes instanceof RoutingConfigurator) {
-            $routes->import('@BaconQrCodeBundle/Resources/config/routes.yaml');
-        } else {
-            $routes->import('@BaconQrCodeBundle/Resources/config/routes.yaml', '/', 'yaml');
-        }
+        // 路由会通过 RoutingAutoLoaderBundle 自动加载控制器的路由注解
     }
 
     public function getCacheDir(): string
