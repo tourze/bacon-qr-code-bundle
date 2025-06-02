@@ -8,3 +8,5 @@ services:
     resource: '../../Controller/'
   BaconQrCodeBundle\Service\:
     resource: '../../Service/'
+  BaconQrCodeBundle\Twig\:
+    resource: '../../Twig/'

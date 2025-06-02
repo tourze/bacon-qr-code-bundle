@@ -14,6 +14,7 @@
 - 可自定义二维码尺寸和边距
 - 简单的二维码 URL 生成
 - 自动检测可用的图像处理库（GD, Imagick）
+- Twig 函数方便模板集成
 
 ## 安装
 
@@ -66,7 +67,11 @@ class YourController
 ### 在 Twig 模板中显示二维码
 
 ```twig
+{# 使用控制器传递的变量 #}
 <img src="{{ qrCodeUrl }}" alt="二维码">
+
+{# 使用 Twig 函数 #}
+<img src="{{ qr_code_url('https://example.com') }}" alt="二维码">
 
 {# 使用自定义参数 #}
 <img src="{{ path('qr_code_generate', {
@@ -99,6 +104,25 @@ class YourController
         return $qrcodeService->generateQrCode('https://example.com', $options);
     }
 }
+```
+
+## Twig 函数
+
+### qr_code_url
+
+在模板中直接生成二维码 URL：
+
+```twig
+{# 基本用法 #}
+<img src="{{ qr_code_url('https://example.com') }}" alt="二维码">
+
+{# 不同内容类型 #}
+<img src="{{ qr_code_url('mailto:contact@example.com') }}" alt="邮箱二维码">
+<img src="{{ qr_code_url('tel:+1234567890') }}" alt="电话二维码">
+<img src="{{ qr_code_url('纯文本内容') }}" alt="文本二维码">
+
+{# 使用变量 #}
+<img src="{{ qr_code_url(user.email) }}" alt="用户邮箱二维码">
 ```
 
 ## 可用选项

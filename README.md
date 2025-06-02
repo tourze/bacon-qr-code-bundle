@@ -14,6 +14,7 @@ A Symfony bundle for [bacon/bacon-qr-code](https://github.com/Bacon/BaconQrCode)
 - Customizable QR code size and margin
 - Simple URL generation for QR codes
 - Automatic detection of available image libraries (GD, Imagick)
+- Twig function for easy template integration
 
 ## Installation
 
@@ -66,7 +67,11 @@ class YourController
 ### Display QR Code in Twig Template
 
 ```twig
+{# Using the controller variable #}
 <img src="{{ qrCodeUrl }}" alt="QR Code">
+
+{# Using the Twig function #}
+<img src="{{ qr_code_url('https://example.com') }}" alt="QR Code">
 
 {# With custom parameters #}
 <img src="{{ path('qr_code_generate', {
@@ -99,6 +104,25 @@ class YourController
         return $qrcodeService->generateQrCode('https://example.com', $options);
     }
 }
+```
+
+## Twig Functions
+
+### qr_code_url
+
+Generate a QR code URL directly in your templates:
+
+```twig
+{# Basic usage #}
+<img src="{{ qr_code_url('https://example.com') }}" alt="QR Code">
+
+{# With different content types #}
+<img src="{{ qr_code_url('mailto:contact@example.com') }}" alt="Email QR Code">
+<img src="{{ qr_code_url('tel:+1234567890') }}" alt="Phone QR Code">
+<img src="{{ qr_code_url('Simple text content') }}" alt="Text QR Code">
+
+{# Using variables #}
+<img src="{{ qr_code_url(user.email) }}" alt="User Email QR Code">
 ```
 
 ## Available Options

@@ -5,6 +5,7 @@ namespace BaconQrCodeBundle\Tests\Integration;
 use BaconQrCodeBundle\BaconQrCodeBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -24,6 +25,7 @@ class IntegrationTestKernel extends Kernel
     {
         return [
             new FrameworkBundle(),
+            new TwigBundle(),
             new RoutingAutoLoaderBundle(),
             new BaconQrCodeBundle(),
         ];
@@ -42,13 +44,17 @@ class IntegrationTestKernel extends Kernel
             'php_errors' => [
                 'log' => true,
             ],
-//            'validation' => [
-//                'email_validation_mode' => 'html5',
-//            ],
-//            'uid' => [
-//                'default_uuid_version' => 7,
-//                'time_based_uuid_version' => 7,
-//            ],
+            'validation' => [
+                'email_validation_mode' => 'html5',
+            ],
+            'uid' => [
+                'default_uuid_version' => 7,
+                'time_based_uuid_version' => 7,
+            ],
+        ]);
+
+        $container->loadFromExtension('twig', [
+            'default_path' => '%kernel.project_dir%/templates',
         ]);
     }
 
