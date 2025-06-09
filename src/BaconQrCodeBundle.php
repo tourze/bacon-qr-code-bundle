@@ -2,15 +2,18 @@
 
 namespace BaconQrCodeBundle;
 
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
+use Tourze\RoutingAutoLoaderBundle\RoutingAutoLoaderBundle;
 
 class BaconQrCodeBundle extends Bundle implements BundleDependencyInterface
 {
     public static function getBundleDependencies(): array
     {
         return [
-            \Tourze\RoutingAutoLoaderBundle\RoutingAutoLoaderBundle::class => ['all' => true],
+            RoutingAutoLoaderBundle::class => ['all' => true],
+            TwigBundle::class => ['all' => true],
         ];
     }
 }

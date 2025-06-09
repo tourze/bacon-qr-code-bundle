@@ -2,16 +2,21 @@
 
 namespace BaconQrCodeBundle\Tests\Integration;
 
+use BaconQrCodeBundle\BaconQrCodeBundle;
 use BaconQrCodeBundle\Twig\QrcodeExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 use Twig\Environment;
 
 class TwigExtensionIntegrationTest extends KernelTestCase
 {
-    protected static function getKernelClass(): string
+    protected static function createKernel(array $options = []): KernelInterface
     {
-        return IntegrationTestKernel::class;
+        return new IntegrationTestKernel('test', true, [
+            BaconQrCodeBundle::class => ['all' => true],
+        ]);
     }
 
     protected function setUp(): void

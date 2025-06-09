@@ -2,17 +2,22 @@
 
 namespace BaconQrCodeBundle\Tests\Integration;
 
+use BaconQrCodeBundle\BaconQrCodeBundle;
 use BaconQrCodeBundle\Service\QrcodeService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 
 class BaconQrCodeIntegrationTest extends KernelTestCase
 {
-    protected static function getKernelClass(): string
+    protected static function createKernel(array $options = []): KernelInterface
     {
-        return IntegrationTestKernel::class;
+        return new IntegrationTestKernel('test', true, [
+            BaconQrCodeBundle::class => ['all' => true],
+        ]);
     }
 
     protected function setUp(): void
