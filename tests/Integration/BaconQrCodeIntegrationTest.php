@@ -15,7 +15,10 @@ class BaconQrCodeIntegrationTest extends KernelTestCase
 {
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new IntegrationTestKernel('test', true, [
+        $env = $options['environment'] ?? $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? 'test';
+        $debug = $options['debug'] ?? $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? true;
+
+        return new IntegrationTestKernel($env, $debug, [
             BaconQrCodeBundle::class => ['all' => true],
         ]);
     }
@@ -25,9 +28,14 @@ class BaconQrCodeIntegrationTest extends KernelTestCase
         self::bootKernel();
     }
 
+    protected function tearDown(): void
+    {
+        self::ensureKernelShutdown();
+        parent::tearDown();
+    }
+
     public function testServiceWiring(): void
     {
-        /** @var ContainerInterface $container */
         $container = self::getContainer();
 
         // 测试服务是否可以从容器中获取
@@ -38,11 +46,10 @@ class BaconQrCodeIntegrationTest extends KernelTestCase
 
     public function testQrcodeServiceGenerateQrCode(): void
     {
-        /** @var ContainerInterface $container */
         $container = self::getContainer();
 
-        /** @var QrcodeService $service */
         $service = $container->get('BaconQrCodeBundle\Service\QrcodeService');
+        /** @var QrcodeService $service */
 
         // 测试生成二维码
         $response = $service->generateQrCode('https://example.com');
