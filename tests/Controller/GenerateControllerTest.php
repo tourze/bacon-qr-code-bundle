@@ -40,7 +40,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -66,7 +66,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -92,7 +92,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -119,7 +119,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -150,7 +150,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -177,7 +177,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode($specialData, $request);
+        $response = $this->controller->__invoke($specialData, $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -203,7 +203,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode('test-data', $request);
+        $response = $this->controller->__invoke('test-data', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);
@@ -229,7 +229,7 @@ class GenerateControllerTest extends TestCase
             ->willReturn($expectedResponse);
 
         // 执行测试
-        $response = $this->controller->renderCode(' ', $request);
+        $response = $this->controller->__invoke(' ', $request);
 
         // 断言结果
         $this->assertSame($expectedResponse, $response);

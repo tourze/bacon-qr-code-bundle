@@ -24,7 +24,6 @@ class BaconQrCodeBundleTest extends TestCase
         $path = $bundle->getPath();
 
         // 验证路径是否正确
-        $this->assertIsString($path);
         $this->assertDirectoryExists($path);
 
         // 检查路径是否包含 bacon-qr-code-bundle，而不是检查结尾

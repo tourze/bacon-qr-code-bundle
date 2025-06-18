@@ -5,13 +5,13 @@ namespace BaconQrCodeBundle\Tests\Integration;
 use BaconQrCodeBundle\BaconQrCodeBundle;
 use BaconQrCodeBundle\Twig\QrcodeExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 use Twig\Environment;
 
 class TwigExtensionIntegrationTest extends KernelTestCase
 {
+    /** @phpstan-ignore-next-line missingType.iterableValue */
     protected static function createKernel(array $options = []): KernelInterface
     {
         $env = $options['environment'] ?? $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? 'test';
@@ -29,7 +29,7 @@ class TwigExtensionIntegrationTest extends KernelTestCase
 
     public function testTwigExtensionRegistered(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         // 测试 Twig 扩展是否注册
@@ -41,7 +41,7 @@ class TwigExtensionIntegrationTest extends KernelTestCase
 
     public function testTwigFunctionAvailable(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         /** @var Environment $twig */
@@ -56,7 +56,7 @@ class TwigExtensionIntegrationTest extends KernelTestCase
 
     public function testTwigFunctionExecution(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         /** @var Environment $twig */
@@ -67,14 +67,13 @@ class TwigExtensionIntegrationTest extends KernelTestCase
         $result = $template->render();
 
         // 验证结果包含预期的URL结构
-        $this->assertIsString($result);
         $this->assertStringContainsString('/qr-code/', $result);
         $this->assertStringContainsString('https://example.com', $result);
     }
 
     public function testTwigFunctionWithDifferentData(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         /** @var Environment $twig */
@@ -91,7 +90,6 @@ class TwigExtensionIntegrationTest extends KernelTestCase
             $template = $twig->createTemplate('{{ qr_code_url(data) }}');
             $result = $template->render(['data' => $testData]);
 
-            $this->assertIsString($result);
             $this->assertStringContainsString('/qr-code/', $result);
             $this->assertNotEmpty($result);
         }

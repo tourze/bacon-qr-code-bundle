@@ -5,7 +5,6 @@ namespace BaconQrCodeBundle\Tests\Integration;
 use BaconQrCodeBundle\BaconQrCodeBundle;
 use BaconQrCodeBundle\Service\QrcodeService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -13,6 +12,7 @@ use Tourze\IntegrationTestKernel\IntegrationTestKernel;
 
 class BaconQrCodeIntegrationTest extends KernelTestCase
 {
+    /** @phpstan-ignore-next-line missingType.iterableValue */
     protected static function createKernel(array $options = []): KernelInterface
     {
         $env = $options['environment'] ?? $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? 'test';
@@ -67,7 +67,7 @@ class BaconQrCodeIntegrationTest extends KernelTestCase
 
     public function testQrcodeServiceGetImageUrl(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         /** @var QrcodeService $service */
@@ -92,7 +92,7 @@ class BaconQrCodeIntegrationTest extends KernelTestCase
 
     public function testQrcodeServiceWithDifferentFormats(): void
     {
-        /** @var ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\Container $container */
         $container = self::getContainer();
 
         /** @var QrcodeService $service */

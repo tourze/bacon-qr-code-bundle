@@ -18,7 +18,7 @@ class GenerateController extends AbstractController
     }
 
     #[Route('/qr-code/{data}', name: 'qr_code_generate', requirements: ['data' => '[\\w\\W]+'])]
-    public function renderCode(string $data, Request $request): Response
+    public function __invoke(string $data, Request $request): Response
     {
         // 从请求参数获取配置选项，使用 filter() 代替 getInt() 以解决废弃警告
         $options = [

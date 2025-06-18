@@ -23,7 +23,6 @@ class QrcodeExtensionTest extends TestCase
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertIsArray($functions);
         $this->assertCount(1, $functions);
         $this->assertInstanceOf(TwigFunction::class, $functions[0]);
         $this->assertEquals('qr_code_url', $functions[0]->getName());
