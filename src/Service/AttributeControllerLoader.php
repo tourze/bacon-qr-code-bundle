@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle\Service;
 
 use BaconQrCodeBundle\Controller\GenerateController;
@@ -34,6 +36,7 @@ class AttributeControllerLoader extends Loader implements RoutingAutoLoaderInter
     {
         $collection = new RouteCollection();
         $collection->addCollection($this->controllerLoader->load(GenerateController::class));
+
         return $collection;
     }
 }

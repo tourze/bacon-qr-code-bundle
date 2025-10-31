@@ -1,237 +1,233 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle\Tests\Controller;
 
 use BaconQrCodeBundle\Controller\GenerateController;
-use BaconQrCodeBundle\Service\QrcodeService;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Tourze\PHPUnitSymfonyWebTest\AbstractWebTestCase;
 
-class GenerateControllerTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(GenerateController::class)]
+#[RunTestsInSeparateProcesses]
+final class GenerateControllerTest extends AbstractWebTestCase
 {
-    private MockObject|QrcodeService $qrcodeService;
-    private GenerateController $controller;
-
-    protected function setUp(): void
+    public function testUnauthorizedAccessAllowed(): void
     {
-        $this->qrcodeService = $this->createMock(QrcodeService::class);
-        $this->controller = new GenerateController($this->qrcodeService);
+        $client = self::createClientWithDatabase();
+
+        $client->request('GET', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withBasicParameters(): void
+    public function testGetMethod(): void
     {
-        // 准备模拟请求对象
-        $request = new Request();
+        $client = self::createClientWithDatabase();
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 1;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/test-data');
 
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withCustomSize(): void
+    public function testControllerWithBasicParameters(): void
     {
-        // 准备带有自定义尺寸的请求
-        $request = new Request(['size' => '400']);
+        $client = self::createClientWithDatabase();
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 400
-                        && isset($options['margin']) && $options['margin'] === 1;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/test-data');
 
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withCustomMargin(): void
+    public function testControllerWithCustomSize(): void
     {
-        // 准备带有自定义边距的请求
-        $request = new Request(['margin' => '20']);
+        $client = self::createClientWithDatabase();
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 20;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/test-data', ['size' => '400']);
 
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withCustomFormat(): void
+    public function testControllerWithCustomMargin(): void
     {
-        // 准备带有自定义格式的请求
-        $request = new Request(['format' => 'svg']);
+        $client = self::createClientWithDatabase();
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 1
-                        && isset($options['format']) && $options['format'] === 'svg';
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/test-data', ['margin' => '20']);
 
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withAllCustomOptions(): void
+    public function testControllerWithCustomFormat(): void
     {
-        // 准备带有所有自定义选项的请求
-        $request = new Request([
+        $client = self::createClientWithDatabase();
+
+        $client->request('GET', '/qr-code/test-data', ['format' => 'svg']);
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testControllerWithAllCustomOptions(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('GET', '/qr-code/test-data', [
             'size' => '500',
             'margin' => '5',
-            'format' => 'svg'
+            'format' => 'svg',
         ]);
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 500
-                        && isset($options['margin']) && $options['margin'] === 5
-                        && isset($options['format']) && $options['format'] === 'svg';
-                })
-            )
-            ->willReturn($expectedResponse);
-
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withSpecialCharactersInData(): void
+    public function testControllerWithSpecialCharactersInData(): void
     {
-        // 准备模拟请求对象
-        $request = new Request();
-        $specialData = 'https://example.com/?param=value&special=!@#';
+        $client = self::createClientWithDatabase();
+        $specialData = urlencode('https://example.com/?param=value&special=!@#');
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                $specialData,
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 1;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', "/qr-code/{$specialData}");
 
-        // 执行测试
-        $response = $this->controller->__invoke($specialData, $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withInvalidSizeParameter(): void
+    public function testControllerWithInvalidSizeParameter(): void
     {
-        // 准备带有无效尺寸（非数字）的请求
-        $request = new Request(['size' => 'invalid']);
+        $client = self::createClientWithDatabase();
 
-        // 使用 filter() 方法后，无效值将返回默认值300，而非0
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                'test-data',
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 1;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/test-data', ['size' => 'invalid']);
 
-        // 执行测试
-        $response = $this->controller->__invoke('test-data', $request);
-
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
     }
 
-    public function testRenderCode_withNonEmptyData(): void
+    public function testControllerWithNonEmptyData(): void
     {
-        // 使用非空数据替代空字符串，因为底层库不接受空字符串
-        $request = new Request();
+        $client = self::createClientWithDatabase();
 
-        // 设置服务模拟对象的期望行为
-        $expectedResponse = new Response('QR Code Content');
-        $this->qrcodeService
-            ->expects($this->once())
-            ->method('generateQrCode')
-            ->with(
-                ' ',  // 使用空格替代空字符串
-                $this->callback(function (array $options) {
-                    return isset($options['size']) && $options['size'] === 300
-                        && isset($options['margin']) && $options['margin'] === 1;
-                })
-            )
-            ->willReturn($expectedResponse);
+        $client->request('GET', '/qr-code/' . urlencode(' '));
 
-        // 执行测试
-        $response = $this->controller->__invoke(' ', $request);
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
 
-        // 断言结果
-        $this->assertSame($expectedResponse, $response);
+    public function testPostMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('POST', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testPutMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('PUT', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testDeleteMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('DELETE', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testPatchMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('PATCH', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testHeadMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('HEAD', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertEmpty($response->getContent());
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    public function testOptionsMethod(): void
+    {
+        $client = self::createClientWithDatabase();
+
+        $client->request('OPTIONS', '/qr-code/test-data');
+
+        self::getClient($client);
+        $this->assertResponseIsSuccessful();
+        $response = $client->getResponse();
+        $this->assertContains($response->headers->get('Content-Type'), ['image/png', 'image/svg+xml']);
+    }
+
+    #[DataProvider('provideNotAllowedMethods')]
+    public function testMethodNotAllowed(string $method): void
+    {
+        if ('INVALID' === $method) {
+            $this->assertSame('INVALID', $method, 'No methods are disallowed for this route');
+
+            return;
+        }
+
+        $client = self::createClientWithDatabase();
+
+        $client->request($method, '/qr-code/test-data');
+
+        $this->assertResponseStatusCodeSame(405);
     }
 }

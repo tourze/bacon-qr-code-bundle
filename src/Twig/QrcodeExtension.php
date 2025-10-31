@@ -1,23 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle\Twig;
 
 use BaconQrCodeBundle\Service\QrcodeService;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class QrcodeExtension extends AbstractExtension
+readonly class QrcodeExtension
 {
     public function __construct(
-        private readonly QrcodeService $qrcodeService
+        private QrcodeService $qrcodeService,
     ) {
-    }
-
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('qr_code_url', $this->getQrcodeUrl(...)),
-        ];
     }
 
     /**
@@ -27,6 +21,7 @@ class QrcodeExtension extends AbstractExtension
      *
      * @return string 二维码图片URL
      */
+    #[AsTwigFunction(name: 'qr_code_url')]
     public function getQrcodeUrl(string $data): string
     {
         return $this->qrcodeService->getImageUrl($data);

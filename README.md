@@ -4,6 +4,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/tourze/bacon-qr-code-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/bacon-qr-code-bundle)
 [![License](https://img.shields.io/github/license/tourze/php-monorepo.svg?style=flat-square)](https://github.com/tourze/php-monorepo/blob/main/LICENSE)
+[![PHP Version](https://img.shields.io/packagist/php-v/tourze/bacon-qr-code-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/bacon-qr-code-bundle)
 
 A Symfony bundle for [bacon/bacon-qr-code](https://github.com/Bacon/BaconQrCode) library that provides QR code generation capabilities in your Symfony application.
 
@@ -15,6 +16,15 @@ A Symfony bundle for [bacon/bacon-qr-code](https://github.com/Bacon/BaconQrCode)
 - Simple URL generation for QR codes
 - Automatic detection of available image libraries (GD, Imagick)
 - Twig function for easy template integration
+
+## Requirements
+
+- PHP 8.1 or higher
+- Symfony 6.4 or higher
+- ext-filter PHP extension
+- One of the following image libraries (optional, for PNG support):
+  - GD extension (ext-gd)
+  - ImageMagick extension (ext-imagick)
 
 ## Installation
 
@@ -134,6 +144,40 @@ When generating QR codes, you can customize the following options:
 | `size`   | Size of the QR code in pixels                        | 300                                 |
 | `margin` | Margin around the QR code in pixels                  | 10                                  |
 | `format` | Output format ('png', 'svg', 'eps')                  | 'png' if GD or Imagick is available, otherwise 'svg' |
+
+## Workflow
+
+The following diagram shows the QR code generation workflow:
+
+```mermaid
+graph TD
+    A[Application Request] --> B[Call QrcodeService]
+    B --> C{Choose Output Format}
+    C -->|PNG| D[Check GD/Imagick availability]
+    D -->|Available| E[Use corresponding backend]
+    D -->|Not Available| F[Use SVG backend]
+    C -->|SVG| F
+    C -->|EPS| G[Use EPS backend]
+    E --> H[Return QR code image]
+    F --> H
+    G --> H
+```
+
+## Testing
+
+Run the tests using PHPUnit:
+
+```bash
+# Run all tests
+./vendor/bin/phpunit packages/bacon-qr-code-bundle/tests
+
+# Run with code coverage
+./vendor/bin/phpunit packages/bacon-qr-code-bundle/tests --coverage-html coverage
+```
+
+## Contributing
+
+Please see [CONTRIBUTING.md](https://github.com/tourze/php-monorepo/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 

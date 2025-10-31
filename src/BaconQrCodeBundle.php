@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle;
 
 use Symfony\Bundle\TwigBundle\TwigBundle;

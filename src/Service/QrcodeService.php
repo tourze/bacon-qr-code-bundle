@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle\Service;
 
 use BaconQrCode\Renderer\GDLibRenderer;
@@ -45,7 +47,7 @@ class QrcodeService
      * 生成二维码图像内容
      *
      * @param string $data    要编码的数据
-     * @param array  $options 选项，可包含 size, margin, format 等
+     * @param array<string, mixed>  $options 选项，可包含 size, margin, format 等
      *
      * @return Response 包含二维码内容的响应对象
      */

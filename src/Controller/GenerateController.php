@@ -6,18 +6,20 @@ namespace BaconQrCodeBundle\Controller;
 
 use BaconQrCodeBundle\Service\QrcodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GenerateController extends AbstractController
+#[Autoconfigure(public: true)]
+final class GenerateController extends AbstractController
 {
     public function __construct(
         private readonly QrcodeService $qrcodeService,
     ) {
     }
 
-    #[Route(path: '/qr-code/{data}', name: 'qr_code_generate', requirements: ['data' => '[\\w\\W]+'])]
+    #[Route(path: '/qr-code/{data}', name: 'qr_code_generate', requirements: ['data' => '[\w\W]+'])]
     public function __invoke(string $data, Request $request): Response
     {
         // 从请求参数获取配置选项，使用 filter() 代替 getInt() 以解决废弃警告

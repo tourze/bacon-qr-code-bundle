@@ -1,20 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BaconQrCodeBundle\Tests\Service;
 
 use BaconQrCodeBundle\Service\AttributeControllerLoader;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\RouteCollection;
+use Tourze\PHPUnitSymfonyKernelTest\AbstractIntegrationTestCase;
 use Tourze\RoutingAutoLoaderBundle\Service\RoutingAutoLoaderInterface;
 
-class AttributeControllerLoaderTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(AttributeControllerLoader::class)]
+#[RunTestsInSeparateProcesses]
+final class AttributeControllerLoaderTest extends AbstractIntegrationTestCase
 {
     private AttributeControllerLoader $loader;
 
-    protected function setUp(): void
+    protected function onSetUp(): void
     {
-        $this->loader = new AttributeControllerLoader();
+        $this->loader = self::getService(AttributeControllerLoader::class);
     }
 
     public function testInstanceOfLoader(): void
@@ -106,7 +115,7 @@ class AttributeControllerLoaderTest extends TestCase
 
         // 验证 data 参数的正则表达式要求
         $this->assertArrayHasKey('data', $requirements);
-        $this->assertEquals('[\\w\\W]+', $requirements['data']);
+        $this->assertEquals('[\w\W]+', $requirements['data']);
     }
 
     public function testRouteMethods(): void
@@ -119,6 +128,6 @@ class AttributeControllerLoaderTest extends TestCase
         $methods = $route->getMethods();
 
         // 如果没有指定方法，则支持所有方法
-        $this->assertTrue(empty($methods) || in_array('GET', $methods), '应该支持 GET 方法');
+        $this->assertTrue([] === $methods || in_array('GET', $methods, true), '应该支持 GET 方法');
     }
-} 
+}

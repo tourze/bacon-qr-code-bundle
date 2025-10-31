@@ -4,6 +4,7 @@
 
 [![最新版本](https://img.shields.io/packagist/v/tourze/bacon-qr-code-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/bacon-qr-code-bundle)
 [![许可证](https://img.shields.io/github/license/tourze/php-monorepo.svg?style=flat-square)](https://github.com/tourze/php-monorepo/blob/main/LICENSE)
+[![PHP 版本](https://img.shields.io/packagist/php-v/tourze/bacon-qr-code-bundle.svg?style=flat-square)](https://packagist.org/packages/tourze/bacon-qr-code-bundle)
 
 一个为 Symfony 应用程序提供二维码生成功能的 Bundle，基于 [bacon/bacon-qr-code](https://github.com/Bacon/BaconQrCode) 库实现。
 
@@ -15,6 +16,15 @@
 - 简单的二维码 URL 生成
 - 自动检测可用的图像处理库（GD, Imagick）
 - Twig 函数方便模板集成
+
+## 系统要求
+
+- PHP 8.1 或更高版本
+- Symfony 6.4 或更高版本
+- ext-filter PHP 扩展
+- 以下图像库之一（可选，用于 PNG 支持）：
+  - GD 扩展 (ext-gd)
+  - ImageMagick 扩展 (ext-imagick)
 
 ## 安装
 
@@ -152,6 +162,22 @@ graph TD
     F --> H
     G --> H
 ```
+
+## 测试
+
+使用 PHPUnit 运行测试：
+
+```bash
+# 运行所有测试
+./vendor/bin/phpunit packages/bacon-qr-code-bundle/tests
+
+# 生成代码覆盖率报告
+./vendor/bin/phpunit packages/bacon-qr-code-bundle/tests --coverage-html coverage
+```
+
+## 贡献指南
+
+详情请查看 [CONTRIBUTING.md](https://github.com/tourze/php-monorepo/blob/main/CONTRIBUTING.md) 文件。
 
 ## 许可证
 
